@@ -13,6 +13,11 @@ allprojects {
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
+
+    kotlin {
+        jvmToolchain(22)
+    }
+
     apply(plugin = "com.vanniktech.maven.publish")
 
     kotlin {
@@ -20,7 +25,6 @@ subprojects {
     }
 
     mavenPublishing {
-        coordinates("draeger.codes", rootProject.name, "0.1.0-SNAPSHOT")
         publishToMavenCentral(SonatypeHost.S01, automaticRelease = false)
         signAllPublications()
 
@@ -29,13 +33,12 @@ subprojects {
         pom {
             name.set("Kotlin Library Template")
             description.set("A template project for creating new Kotlin libraries.")
-            inceptionYear.set("2020")
+            inceptionYear.set("2024")
             url.set("https://github.com/$githubRepo/")
             licenses {
                 license {
-                    name.set("The Apache License, Version 2.0")
-                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    name.set("MIT License")
+                    url.set("https://opensource.org/licenses/MIT")
                 }
             }
             developers {
