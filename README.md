@@ -1,4 +1,4 @@
-# kotlin-library-template [![CI](https://github.com/christian-draeger/kotlin-library-template/actions/workflows/gradle.yml/badge.svg)](https://github.com/christian-draeger/kotlin-library-template/actions/workflows/gradle.yml)
+# kotlin-library-template [![CI](https://github.com/christian-draeger/kotlin-library-template/actions/workflows/build.yml/badge.svg)](https://github.com/christian-draeger/kotlin-library-template/actions/workflows/build.yml)
 A template project to jumpstart the creation and publishing of new Kotlin libraries.
 
 ## Publishing
