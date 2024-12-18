@@ -1,5 +1,8 @@
 import com.vanniktech.maven.publish.SonatypeHost
 
+group = "codes.draeger"
+version = "0.0.1-SNAPSHOT"
+
 plugins {
     alias(libs.plugins.kotlinPluginJvm)
     alias(libs.plugins.mavenPublishPlugin)
@@ -21,6 +24,7 @@ subprojects {
     apply(plugin = "com.vanniktech.maven.publish")
 
     mavenPublishing {
+        coordinates("$group", "${rootProject.name}-${project.name}", "$version")
         publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
         signAllPublications()
 
