@@ -1,5 +1,5 @@
-# kotlin-library-template
-A template project for creating new Kotlin libraries.
+# kotlin-library-template [![CI](https://github.com/christian-draeger/kotlin-library-template/actions/workflows/gradle.yml/badge.svg)](https://github.com/christian-draeger/kotlin-library-template/actions/workflows/gradle.yml)
+A template project to jumpstart the creation and publishing of new Kotlin libraries.
 
 ## Publishing
 The template project uses [vanniktech/maven-publish-plugin](https://github.com/vanniktech/gradle-maven-publish-plugin) for publishing to Maven Central.
