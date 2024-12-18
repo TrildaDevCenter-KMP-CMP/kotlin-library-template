@@ -20,12 +20,8 @@ subprojects {
 
     apply(plugin = "com.vanniktech.maven.publish")
 
-    kotlin {
-        jvmToolchain(22)
-    }
-
     mavenPublishing {
-        publishToMavenCentral(SonatypeHost.S01, automaticRelease = false)
+        publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
         signAllPublications()
 
         val githubRepo = "christian-draeger/kotlin-library-template"
