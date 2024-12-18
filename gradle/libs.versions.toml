@@ -1,0 +1,23 @@
+[versions]
+kotlin = "2.1.0"
+kotlinxDatetime = "0.6.1"
+kotlinxSerializationJSON = "1.7.2"
+kotlinxCoroutines = "1.8.1"
+slf4j = "2.0.16"
+kotlinLogging = "7.0.3"
+mavenPublishPlugin = "0.30.0"
+
+[plugins]
+kotlinPluginJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+mavenPublishPlugin = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublishPlugin" }
+
+[libraries]
+kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinxSerialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJSON" }
+kotlinxCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+kotlinLogging = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlinLogging" }
+
+[bundles]
+kotlinxEcosystem = ["kotlinxDatetime", "kotlinxSerialization", "kotlinxCoroutines"]
+logging = ["kotlinLogging", "slf4jSimple"]
