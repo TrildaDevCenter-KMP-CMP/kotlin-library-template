@@ -30,6 +30,8 @@ allprojects {
         if (signingEnabled.get()) {
             signAllPublications()
         }
+        val artifactId = if (project.name == rootProject.name) project.name else "${rootProject.name}-${project.name}"
+        coordinates(artifactId = artifactId)
     }
 
     testlogger {
