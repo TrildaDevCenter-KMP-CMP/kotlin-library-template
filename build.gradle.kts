@@ -1,66 +1,30 @@
-import com.vanniktech.maven.publish.SonatypeHost
+import com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA_PARALLEL
 
 group = "codes.draeger"
 version = "0.0.1-SNAPSHOT"
 
 plugins {
-    alias(libs.plugins.kotlinPluginJvm)
     alias(libs.plugins.mavenPublishPlugin)
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.testLogger)
 }
 
 allprojects {
-    repositories {
-        mavenCentral()
-    }
-}
-
-subprojects {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "org.jetbrains.kotlin.multiplatform")
+    apply(plugin = "com.vanniktech.maven.publish")
+    apply(plugin = "com.adarshr.test-logger")
 
     kotlin {
-        jvmToolchain(22)
+        jvm()
     }
 
-    apply(plugin = "com.vanniktech.maven.publish")
-
-    mavenPublishing {
-        coordinates("$group", "${rootProject.name}-${project.name}", "$version")
-        publishToMavenCentral(SonatypeHost.S01, automaticRelease = true)
-        signAllPublications()
-
-        val githubRepo = "christian-draeger/kotlin-library-template"
-
-        pom {
-            name.set("Kotlin Library Template")
-            description.set("A template project for creating new Kotlin libraries.")
-            inceptionYear.set("2024")
-            url.set("https://github.com/$githubRepo/")
-            licenses {
-                license {
-                    name.set("MIT License")
-                    url.set("https://opensource.org/licenses/MIT")
-                }
-            }
-            developers {
-                developer {
-                    id.set("christian-draeger")
-                    name.set("Christian Dräger")
-                    url.set("https://github.com/christian-draeger/")
-                }
-            }
-            scm {
-                url.set("https://github.com/$githubRepo/")
-                connection.set("scm:git:git://$githubRepo.git")
-                developerConnection.set("scm:git:ssh://git@github.com/$githubRepo.git")
-            }
-        }
+    testlogger {
+        theme = MOCHA_PARALLEL
+        showFullStackTraces = false
+        slowThreshold = 1_000
     }
 
-    dependencies {
-        testImplementation(kotlin("test"))
-    }
-
-    tasks.test {
+    tasks.withType<Test> {
         useJUnitPlatform()
     }
 }
