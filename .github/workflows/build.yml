@@ -55,7 +55,7 @@ jobs:
           java-version: '22'
           distribution: 'liberica'
       - name: Publish package to Maven Central Repository
-        run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache --s
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-configuration-cache --s
 
   dependency-submission:
 
