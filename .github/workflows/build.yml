@@ -36,7 +36,7 @@ jobs:
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
     - name: Build with Gradle Wrapper
-      run: ./gradlew build
+      run: ./gradlew build --s
 
   publish:
     needs: build # Ensures that the 'publish' job runs after the 'build' job is successful
@@ -55,7 +55,7 @@ jobs:
           java-version: '22'
           distribution: 'liberica'
       - name: Publish package to Maven Central Repository
-        run: ./gradlew publishToMavenCentral --no-configuration-cache
+        run: ./gradlew publishToMavenCentral --no-configuration-cache --s
 
   dependency-submission:
 
