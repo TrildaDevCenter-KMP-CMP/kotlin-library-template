@@ -1,8 +1,5 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA_PARALLEL
 
-group = "codes.draeger"
-version = "0.0.1-SNAPSHOT"
-
 plugins {
     alias(libs.plugins.mavenPublishPlugin)
     alias(libs.plugins.kotlinMultiplatform)
@@ -32,6 +29,9 @@ allprojects {
         }
         val artifactId = if (project.name == rootProject.name) project.name else "${rootProject.name}-${project.name}"
         coordinates(artifactId = artifactId)
+        pom {
+            name.set(artifactId)
+        }
     }
 
     testlogger {
