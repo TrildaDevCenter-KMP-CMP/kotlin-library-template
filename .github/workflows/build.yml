@@ -8,6 +8,7 @@ on:
       - '**/*.kts'
       - 'gradle/**/*'
       - '.github/**/*'
+      - 'gradle.properties'
   pull_request:
     branches: [ "main" ]
     paths:
@@ -15,6 +16,7 @@ on:
       - '**/*.kts'
       - 'gradle/**/*'
       - '.github/**/*'
+      - 'gradle.properties'
 
 jobs:
   build:
