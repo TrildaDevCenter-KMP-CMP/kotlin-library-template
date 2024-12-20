@@ -6,14 +6,6 @@ plugins {
     alias(libs.plugins.testLogger)
 }
 
-val signingInMemoryKeyId: String? by project
-val signingInMemoryKey: String? by project
-val signingInMemoryKeyPassword: String? by project
-
-val signingEnabled: Provider<Boolean> = provider {
-    signingInMemoryKeyId != null && signingInMemoryKey != null && signingInMemoryKeyPassword != null
-}
-
 allprojects {
     apply(plugin = "org.jetbrains.kotlin.multiplatform")
     apply(plugin = "com.vanniktech.maven.publish")
@@ -24,9 +16,6 @@ allprojects {
     }
 
     mavenPublishing {
-        if (signingEnabled.get()) {
-            signAllPublications()
-        }
         val artifactId = if (project.name == rootProject.name) project.name else "${rootProject.name}-${project.name}"
         coordinates(artifactId = artifactId)
         pom {
