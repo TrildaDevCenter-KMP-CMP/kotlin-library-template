@@ -1,4 +1,5 @@
-# kotlin-library-template [![CI](https://github.com/christian-draeger/kotlin-library-template/actions/workflows/build.yml/badge.svg)](https://github.com/christian-draeger/kotlin-library-template/actions/workflows/build.yml)
+# kotlin-library-template [![CI](https://github.com/christian-draeger/kotlin-library-template/actions/workflows/build.yml/badge.svg)](https://github.com/christian-draeger/kotlin-library-template/actions/workflows/build.yml) ![Maven Central Version](https://img.shields.io/maven-central/v/codes.draeger/kotlin-library-template-example?logo=sonatype&label=Release)
+
 A template project to jumpstart the creation and publishing of new Kotlin libraries.
 
 ## Publishing
