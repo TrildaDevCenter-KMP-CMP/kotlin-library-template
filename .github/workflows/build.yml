@@ -9,6 +9,8 @@ on:
       - 'gradle/**/*'
       - '.github/**/*'
       - 'gradle.properties'
+    paths-ignore:
+      - '.github/workflows/release.yml'
   pull_request:
     branches: [ "main" ]
     paths:
@@ -17,6 +19,8 @@ on:
       - 'gradle/**/*'
       - '.github/**/*'
       - 'gradle.properties'
+    paths-ignore:
+      - '.github/workflows/release.yml'
 
 jobs:
   build:
