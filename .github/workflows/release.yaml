@@ -22,7 +22,7 @@ on:
           - rc
 
 jobs:
-  determine_release_version:
+  create_release:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -38,11 +38,10 @@ jobs:
         with:
           fallback: 0.0.0
 
-      - name: Create and push fallback tag if no tag found
+      - name: Create temporary fallback tag if no tag found
         if: ${{ steps.previoustag.outputs.tag == '0.0.0' }}
         run: |
           git tag 0.0.0
-          git push origin 0.0.0
 
 ### conventional commit
       - name: Get Next Version based on conventional commit messages
@@ -63,6 +62,12 @@ jobs:
         with:
           current-version: ${{ steps.previoustag.outputs.tag }}
           version-fragment: ${{ inputs.release_type }}
+
+### reset temporary tag
+      - name: Delete temporary tag if created
+        if: ${{ steps.previoustag.outputs.tag == '0.0.0' }}
+        run: |
+          git tag -d 0.0.0
           
 ### set version
       - name: Hold new version
