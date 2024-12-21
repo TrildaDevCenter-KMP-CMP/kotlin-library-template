@@ -26,6 +26,46 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: print 
-        run: echo "${{ inputs.release_type }}"
-  
+        
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 0.1.0
+
+### conventional commit
+      - name: Get Next Version based on conventional commit messages
+        if: ${{ inputs.release_type == 'conventional commit' }}
+        id: version_by_conventional_commit
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ github.token }}
+          branch: main
+          fromTag: ${{ steps.previoustag.outputs.tag }}
+
+### none conventional commit
+      - name: Get Next Version based on given version fragment input
+        if: ${{ inputs.release_type != 'conventional commit' }}
+        id: version_by_fragment
+        uses: christian-draeger/increment-semantic-version@1.2.1
+        with:
+          current-version: ${{ steps.previoustag.outputs.tag }}
+          version-fragment: ${{ inputs.release_type }}
+          
+###
+      - name: Hold new version
+        id: set_version
+        run: |
+          if [ "${{ inputs.release_type }}" = "conventional commit" ]; then
+            echo "::set-output name=new_version::${{ steps.version_by_conventional_commit.outputs.nextStrict }}"
+          else
+            echo "::set-output name=new_version::${{ steps.version_by_fragment.outputs.next-version }}"
+          fi
+
+      - name: Print the input tag to STDOUT
+        run: echo "${{ steps.previoustag.outputs.tag }} --> ${{ steps.set_version.outputs.new_version }}"
