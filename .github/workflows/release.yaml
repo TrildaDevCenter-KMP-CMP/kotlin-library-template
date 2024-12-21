@@ -4,7 +4,7 @@ on:
   workflow_dispatch:    
     inputs:
       release_type:
-        description: 'Please choose a release type. It will automatically bump the latest semantic release version accordingly. Selected default id "automatic" and will figure out next release version automatically based on conventional commit messages.'
+        description: 'Create a release with semantic version. Either choose "conventional commit" to determine next release version automatically based on conventional commit messages or force a certain release type by selecting it manually.'
         type: choice
         required: true
         default: 'conventional commit'
@@ -82,10 +82,10 @@ jobs:
       - name: Print the input tag to STDOUT
         run: echo "${{ steps.previoustag.outputs.tag }} --> ${{ steps.set_version.outputs.new_version }}"
 
-      - name: Create dummy commit and tag new version
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git commit --allow-empty -m "bump version: ${{ steps.previoustag.outputs.tag }} --> ${{ steps.set_version.outputs.new_version }}"
-          git tag ${{ steps.set_version.outputs.new_version }}
-          git push origin main --tags
+#      - name: Create dummy commit and tag new version
+#        run: |
+#          git config user.name "GitHub Actions"
+#          git config user.email "actions@github.com"
+#          git commit --allow-empty -m "bump version: ${{ steps.previoustag.outputs.tag }} --> ${{ steps.set_version.outputs.new_version }}"
+#          git tag ${{ steps.set_version.outputs.new_version }}
+#          git push origin main --tags
