@@ -42,6 +42,7 @@ jobs:
         if: ${{ steps.previoustag.outputs.tag == '0.0.0' }}
         run: |
           git tag 0.0.0
+          git push origin 0.0.0
 
 ### conventional commit
       - name: Get Next Version based on conventional commit messages
@@ -68,6 +69,7 @@ jobs:
         if: ${{ steps.previoustag.outputs.tag == '0.0.0' }}
         run: |
           git tag -d 0.0.0
+          git push origin :0.0.0
           
 ### set version
       - name: Hold new version
