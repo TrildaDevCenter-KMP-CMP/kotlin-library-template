@@ -54,6 +54,7 @@ jobs:
         with:
           token: ${{ github.token }}
           branch: main
+          noVersionBumpBehavior: warn
           skipInvalidTags: true
           fromTag: ${{ steps.previoustag.outputs.tag }}
           
@@ -86,6 +87,7 @@ jobs:
         run: echo "${{ steps.previoustag.outputs.tag }} --> ${{ steps.set_version.outputs.new_version }}"
 
       - name: Create dummy commit and tag new version
+        if: ${{ steps.previoustag.outputs.tag != steps.set_version.outputs.new_version }}
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
