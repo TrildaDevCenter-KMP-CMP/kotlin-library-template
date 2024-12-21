@@ -1,14 +1,15 @@
 name: Release
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:    
     inputs:
       release_type:
-        description: 'Please choose a release type. It will automatically bump the latest semantic release version accordingly. Selected default id "automatic" and will figure out next release version automatically based on semantic commit messages.'
+        description: 'Please choose a release type. It will automatically bump the latest semantic release version accordingly. Selected default id "automatic" and will figure out next release version automatically based on conventional commit messages.'
         type: choice
         required: true
-        default: 'automatic'
+        default: 'conventional commit'
         options:
+          - 'conventional commit'
           - major
           - feature
           - minor
@@ -22,6 +23,7 @@ on:
 
 jobs:
   determine_release_version:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: print 
