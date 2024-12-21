@@ -67,7 +67,7 @@ jobs:
       - name: Get Next Version based on given version fragment input
         if: ${{ inputs.release_type != 'conventional commit' }}
         id: version_by_fragment
-        uses: christian-draeger/increment-semantic-version@1.2.1
+        uses: christian-draeger/increment-semantic-version@1.2.3
         with:
           current-version: ${{ steps.previoustag.outputs.tag }}
           version-fragment: ${{ inputs.release_type }}
