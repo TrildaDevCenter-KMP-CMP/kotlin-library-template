@@ -11,84 +11,106 @@ on:
         options:
           - 'conventional commit'
           - major
-          - feature
           - minor
-          - bug
           - patch
-          - hotfix
           - alpha
           - beta
           - pre
           - rc
 
 jobs:
-  create_release:
+  determin_previous_version:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    outputs:
+      previous_tag: ${{ steps.previoustag.outputs.tag }}
     steps:
-        
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-### determin previous version tag
       - name: Get latest tag
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
           fallback: 0.0.0
 
-### conventional commit
+  version_based_on_conventional_commit_messages:
+    if: github.ref == 'refs/heads/main' && inputs.release_type == 'conventional commit'
+    needs: determin_previous_version
+    runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.version_by_conventional_commit.outputs.nextStrict }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Create initial tag if no tag found
-        if: ${{ steps.previoustag.outputs.tag == '0.0.0' }}
+        if: ${{ needs.determin_previous_version.outputs.previous_tag == '0.0.0' }}
         run: |
           OLDEST_COMMIT=$(git rev-list --max-parents=0 HEAD)
           git tag 0.0.0 $OLDEST_COMMIT
           git push origin 0.0.0
           
       - name: Get Next Version based on conventional commit messages
-        if: ${{ inputs.release_type == 'conventional commit' }}
         id: version_by_conventional_commit
         uses: ietf-tools/semver-action@v1
         with:
           token: ${{ github.token }}
           branch: main
           skipInvalidTags: true
-          fromTag: ${{ steps.previoustag.outputs.tag }}
+          fromTag: ${{ needs.determin_previous_version.outputs.previous_tag }}
           
       - name: Delete temporary tag if created
-        if: ${{ steps.previoustag.outputs.tag == '0.0.0' }}
+        if: ${{ needs.determin_previous_version.outputs.previous_tag == '0.0.0' }}
         run: |
           git tag -d 0.0.0
           git push origin :0.0.0
 
-### none conventional commit
+  version_based_on_selected_version_fragment:
+    if: github.ref == 'refs/heads/main' && inputs.release_type != 'conventional commit'
+    needs: determin_previous_version
+    runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.version_by_fragment.outputs.next-version }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Get Next Version based on given version fragment input
-        if: ${{ inputs.release_type != 'conventional commit' }}
         id: version_by_fragment
         uses: christian-draeger/increment-semantic-version@1.2.1
         with:
-          current-version: ${{ steps.previoustag.outputs.tag }}
+          current-version: ${{ needs.determin_previous_version.outputs.previous_tag }}
           version-fragment: ${{ inputs.release_type }}
           
-### set version
+  publish:
+    if: github.ref == 'refs/heads/main'
+    needs:
+      - version_based_on_conventional_commit_messages
+      - version_based_on_selected_version_fragment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
       - name: Hold new version
         id: set_version
         run: |
           if [ "${{ inputs.release_type }}" = "conventional commit" ]; then
-            echo "::set-output name=new_version::${{ steps.version_by_conventional_commit.outputs.nextStrict }}"
+            echo "::set-output name=new_version::${{ needs.version_based_on_conventional_commit_messages.outputs.new_version }}"
           else
-            echo "::set-output name=new_version::${{ steps.version_by_fragment.outputs.next-version }}"
+            echo "::set-output name=new_version::${{ needs.version_based_on_selected_version_fragment.outputs.new_version }}"
           fi
 
       - name: Print the input tag to STDOUT
-        run: echo "${{ steps.previoustag.outputs.tag }} --> ${{ steps.set_version.outputs.new_version }}"
+        run: echo "${{ needs.determin_previous_version.outputs.previous_tag }} --> ${{ needs.publish.outputs.new_version }}"
 
       - name: Create dummy commit and tag new version
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git commit --allow-empty -m "chore(release): bump version ${{ steps.previoustag.outputs.tag }} -> ${{ steps.set_version.outputs.new_version }}"
-          git tag ${{ steps.set_version.outputs.new_version }}
+          git commit --allow-empty -m "chore(release): bump version ${{ needs.determin_previous_version.outputs.previous_tag }} -> ${{ needs.publish.outputs.new_version }}"
+          git tag ${{ needs.publish.outputs.new_version }}
           git push origin main --tags
