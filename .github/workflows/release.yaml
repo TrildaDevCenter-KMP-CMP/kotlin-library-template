@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Please choose a release type. It will automatically bump the latest semantic release version accordingly. Selected default id "automatic" and will figure out next release version automatically based on semantic commit messages.'
+        type: choice
+        required: true
+        default: 'automatic'
+        options:
+          - major
+          - feature
+          - minor
+          - bug
+          - patch
+          - hotfix
+          - alpha
+          - beta
+          - pre
+          - rc
+
+jobs:
+  determine_release_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print 
+        run: echo "${{ inputs.release_type }}"
+  
