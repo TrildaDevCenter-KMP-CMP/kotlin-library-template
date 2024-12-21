@@ -36,7 +36,13 @@ jobs:
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
-          fallback: 0.1.0
+          fallback: 0.0.0
+
+      - name: Create and push fallback tag if no tag found
+        if: ${{ steps.previoustag.outputs.tag == '0.0.0' }}
+        run: |
+          git tag 0.0.0
+          git push origin 0.0.0
 
 ### conventional commit
       - name: Get Next Version based on conventional commit messages
@@ -46,6 +52,7 @@ jobs:
         with:
           token: ${{ github.token }}
           branch: main
+          skipInvalidTags: true
           fromTag: ${{ steps.previoustag.outputs.tag }}
 
 ### none conventional commit
@@ -57,7 +64,7 @@ jobs:
           current-version: ${{ steps.previoustag.outputs.tag }}
           version-fragment: ${{ inputs.release_type }}
           
-###
+### set version
       - name: Hold new version
         id: set_version
         run: |
@@ -69,3 +76,9 @@ jobs:
 
       - name: Print the input tag to STDOUT
         run: echo "${{ steps.previoustag.outputs.tag }} --> ${{ steps.set_version.outputs.new_version }}"
+
+      - name: Create dummy commit and tag new version
+        run: |
+          git commit --allow-empty -m "bump version: ${{ steps.previoustag.outputs.tag }} --> ${{ steps.set_version.outputs.new_version }}"
+          git tag ${{ steps.set_version.outputs.new_version }}
+          git push origin main --tags
