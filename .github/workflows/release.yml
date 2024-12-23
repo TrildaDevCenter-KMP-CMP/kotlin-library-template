@@ -45,6 +45,11 @@ jobs:
     needs: tag_management
     runs-on: ubuntu-latest
     steps:
+      - name: current version
+        id: debug_version
+        run: |
+          echo "current version: ${{ needs.tag_management.outputs.previoustag }}"
+
       - name: Get Next Version based on conventional commit messages
         if: ${{ inputs.release_type == 'automatic' }}
         id: version_by_conventional_commit
@@ -97,8 +102,8 @@ jobs:
   publish_to_maven_central:
     if: ${{ needs.determine_version.outputs.new_version != '' }}
     needs:
-      - build
       - determine_version
+      #- build
     runs-on: ubuntu-latest
     env:
       ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
