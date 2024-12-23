@@ -65,12 +65,11 @@ jobs:
           version-fragment: ${{ inputs.release_type }}
 
       - name: Hold new version
-        id: set_version
         run: |
           if [ "${{ inputs.release_type }}" = "automatic" ]; then
-            echo "::set-output name=new_version::${{ steps.version_by_conventional_commit.outputs.nextStrict }}"
+            echo "NEW_VERSION=${{ steps.version_by_conventional_commit.outputs.nextStrict }}" >> $GITHUB_ENV
           else
-            echo "::set-output name=new_version::${{ steps.version_by_fragment.outputs.next-version }}"
+            echo "NEW_VERSION=${{ steps.version_by_fragment.outputs.next-version }}" >> $GITHUB_ENV
           fi
 
   build:
@@ -113,8 +112,8 @@ jobs:
           distribution: 'liberica'
 
       - name: Publish package to Maven Central Repository
-        #run: ./gradlew publishAndReleaseToMavenCentral -PVERSION_NAME=${{ needs.determine_version.outputs.new_version }} --no-configuration-cache --s
-        run: echo ${{ needs.determine_version.outputs.new_version }}
+        #run: ./gradlew publishAndReleaseToMavenCentral -PVERSION_NAME=${{ env.NEW_VERSION }} --no-configuration-cache --s
+        run: echo ${{ env.NEW_VERSION }}
 
   release_tagging:
     if: false
@@ -129,10 +128,10 @@ jobs:
           fetch-depth: 0
 
       - name: Create dummy commit and tag new version
-        if: ${{ needs.determine_version.outputs.new_version != needs.tag_management.outputs.previoustag }}
+        if: ${{ env.NEW_VERSION != needs.tag_management.outputs.previoustag }}
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git commit --allow-empty -m "chore(release): bump version ${{ needs.tag_management.outputs.previoustag }} -> ${{ needs.determine_version.outputs.new_version }}"
-          git tag ${{ needs.determine_version.outputs.new_version }}
+          git commit --allow-empty -m \"chore(release): bump version ${{ needs.tag_management.outputs.previoustag }} -> ${{ env.NEW_VERSION }}\"
+          git tag ${{ env.NEW_VERSION }}
           git push origin main --tags
