@@ -92,6 +92,7 @@ jobs:
         run: ./gradlew build --s
 
   publish_to_maven_central:
+    if: ${{ env.NEW_VERSION && env.NEW_VERSION != '' }}
     needs:
       - build
       - determine_version
