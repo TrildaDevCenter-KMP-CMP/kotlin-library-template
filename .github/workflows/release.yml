@@ -1,54 +1,52 @@
 name: Release
 
 on:
-  workflow_dispatch:    
+  workflow_dispatch:
     inputs:
       release_type:
         description: 'Create a release with semantic version. Either choose "conventional commit" to determine next release version automatically based on conventional commit messages or force a certain release type by selecting it manually.'
         type: choice
         required: true
-        default: 'conventional commit'
+        default: 'automatic'
         options:
-          - 'conventional commit'
+          - 'automatic'
           - major
-          - feature
           - minor
-          - bug
           - patch
-          - hotfix
           - alpha
           - beta
           - pre
           - rc
+          - stable
 
 jobs:
-  create_release:
-    if: github.ref == 'refs/heads/main'
+  tag_management:
     runs-on: ubuntu-latest
     steps:
-        
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-### determin previous version tag
       - name: Get latest tag
         id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        uses: WyriHaximus/github-action-get-previous-tag@v1
         with:
           fallback: 0.0.0
 
-### conventional commit
       - name: Create initial tag if no tag found
         if: ${{ steps.previoustag.outputs.tag == '0.0.0' }}
         run: |
           OLDEST_COMMIT=$(git rev-list --max-parents=0 HEAD)
           git tag 0.0.0 $OLDEST_COMMIT
           git push origin 0.0.0
-          
+
+  determine_version:
+    needs: tag_management
+    runs-on: ubuntu-latest
+    steps:
       - name: Get Next Version based on conventional commit messages
-        if: ${{ inputs.release_type == 'conventional commit' }}
+        if: ${{ inputs.release_type == 'automatic' }}
         id: version_by_conventional_commit
         uses: ietf-tools/semver-action@v1
         with:
@@ -56,41 +54,83 @@ jobs:
           branch: main
           noVersionBumpBehavior: warn
           skipInvalidTags: true
-          fromTag: ${{ steps.previoustag.outputs.tag }}
-          
-      - name: Delete temporary tag if created
-        if: ${{ steps.previoustag.outputs.tag == '0.0.0' }}
-        run: |
-          git tag -d 0.0.0
-          git push origin :0.0.0
+          fromTag: ${{ needs.tag_management.outputs.previoustag }}
 
-### none conventional commit
       - name: Get Next Version based on given version fragment input
-        if: ${{ inputs.release_type != 'conventional commit' }}
+        if: ${{ inputs.release_type != 'automatic' }}
         id: version_by_fragment
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
-          current-version: ${{ steps.previoustag.outputs.tag }}
+          current-version: ${{ needs.tag_management.outputs.previoustag }}
           version-fragment: ${{ inputs.release_type }}
-          
-### set version
+
       - name: Hold new version
         id: set_version
         run: |
-          if [ "${{ inputs.release_type }}" = "conventional commit" ]; then
+          if [ "${{ inputs.release_type }}" = "automatic" ]; then
             echo "::set-output name=new_version::${{ steps.version_by_conventional_commit.outputs.nextStrict }}"
           else
             echo "::set-output name=new_version::${{ steps.version_by_fragment.outputs.next-version }}"
           fi
 
-      - name: Print the input tag to STDOUT
-        run: echo "${{ steps.previoustag.outputs.tag }} --> ${{ steps.set_version.outputs.new_version }}"
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '22'
+          distribution: 'liberica'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4.0.0
+
+      - name: Build with Gradle Wrapper
+        run: ./gradlew build --s
+
+  publish_to_maven_central:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+      ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+      ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
+      ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_IN_MEMORY_KEY_ID }}
+      ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_IN_MEMORY_KEY_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '22'
+          distribution: 'liberica'
+
+      - name: Publish package to Maven Central Repository
+        #run: ./gradlew publishAndReleaseToMavenCentral -PVERSION_NAME=${{ needs.determine_version.outputs.new_version }} --no-configuration-cache --s
+        run: echo ${{ needs.determine_version.outputs.new_version }}
+
+  release_tagging:
+    if: false
+    needs: determine_version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Create dummy commit and tag new version
-        if: ${{ steps.previoustag.outputs.tag != steps.set_version.outputs.new_version }}
+        if: ${{ needs.determine_version.outputs.new_version != needs.tag_management.outputs.previoustag }}
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git commit --allow-empty -m "chore(release): bump version ${{ steps.previoustag.outputs.tag }} -> ${{ steps.set_version.outputs.new_version }}"
-          git tag ${{ steps.set_version.outputs.new_version }}
+          git commit --allow-empty -m "chore(release): bump version ${{ needs.tag_management.outputs.previoustag }} -> ${{ needs.determine_version.outputs.new_version }}"
+          git tag ${{ needs.determine_version.outputs.new_version }}
           git push origin main --tags
