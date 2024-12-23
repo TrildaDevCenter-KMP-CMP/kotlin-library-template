@@ -22,6 +22,8 @@ on:
 jobs:
   tag_management:
     runs-on: ubuntu-latest
+    outputs:
+      currentVersion: ${{ steps.previoustag.outputs.tag }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -43,12 +45,14 @@ jobs:
 
   determine_version:
     needs: tag_management
+    outputs:
+      newVersion: ${{ steps.set_version.outputs.new_version }}
     runs-on: ubuntu-latest
     steps:
       - name: current version
         id: debug_version
         run: |
-          echo "current version: ${{ needs.tag_management.outputs.previoustag }}"
+          echo "current version: ${{ needs.tag_management.outputs.currentVersion }}"
 
       - name: Get Next Version based on conventional commit messages
         if: ${{ inputs.release_type == 'automatic' }}
@@ -59,25 +63,23 @@ jobs:
           branch: main
           noVersionBumpBehavior: warn
           skipInvalidTags: true
-          fromTag: ${{ needs.tag_management.outputs.previoustag }}
+          fromTag: ${{ needs.tag_management.outputs.currentVersion }}
 
       - name: Get Next Version based on given version fragment input
         if: ${{ inputs.release_type != 'automatic' }}
         id: version_by_fragment
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
-          current-version: ${{ needs.tag_management.outputs.previoustag }}
+          current-version: ${{ needs.tag_management.outputs.currentVersion }}
           version-fragment: ${{ inputs.release_type }}
 
       - name: Hold new version
         id: set_version
         run: |
           if [ "${{ inputs.release_type }}" = "automatic" ]; then
-            echo "new_version=${{ steps.version_by_conventional_commit.outputs.nextStrict }}" >> $GITHUB_ENV
-            echo "::set-output name=new_version::${{ steps.version_by_conventional_commit.outputs.nextStrict }}"
+            echo "new_version=${{ steps.version_by_conventional_commit.outputs.nextStrict }}" >> "$GITHUB_OUTPUT"
           else
-            echo "new_version=${{ steps.version_by_fragment.outputs.next-version }}" >> $GITHUB_ENV
-            echo "::set-output name=new_version::${{ steps.version_by_fragment.outputs.next-version }}"
+            echo "new_version=${{ steps.version_by_fragment.outputs.next-version }}" >> "$GITHUB_OUTPUT"
           fi
 
   build:
@@ -100,7 +102,7 @@ jobs:
         run: ./gradlew build --s
 
   publish_to_maven_central:
-    if: ${{ needs.determine_version.outputs.new_version != '' }}
+    if: ${{ needs.determine_version.outputs.newVersion != '' }}
     needs:
       - determine_version
       #- build
@@ -122,11 +124,14 @@ jobs:
 
       - name: Publish package to Maven Central Repository
         #run: ./gradlew publishAndReleaseToMavenCentral -PVERSION_NAME=${{ env.NEW_VERSION }} --no-configuration-cache --s
-        run: echo ${{ env.NEW_VERSION }}
+        run: echo ${{ needs.determine_version.outputs.newVersion }}
 
   release_tagging:
     if: false
-    needs: publish_to_maven_central
+    needs:
+      - publish_to_maven_central
+      - tag_management
+      - determine_version
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -137,10 +142,10 @@ jobs:
           fetch-depth: 0
 
       - name: Create dummy commit and tag new version
-        if: ${{ env.NEW_VERSION != needs.tag_management.outputs.previoustag }}
+        if: ${{ needs.determine_version.outputs.newVersion != needs.tag_management.outputs.currentVersion }}
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git commit --allow-empty -m \"chore(release): bump version ${{ needs.tag_management.outputs.previoustag }} -> ${{ env.NEW_VERSION }}\"
-          git tag ${{ env.NEW_VERSION }}
+          git commit --allow-empty -m \"chore(release): bump version ${{ needs.tag_management.outputs.currentVersion }} -> ${{ needs.determine_version.outputs.newVersion }}\"
+          git tag ${{ needs.determine_version.outputs.newVersion }}
           git push origin main --tags
