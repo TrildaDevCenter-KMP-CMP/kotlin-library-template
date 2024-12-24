@@ -109,7 +109,7 @@ jobs:
     if: ${{ needs.determine_version.outputs.newVersion != '' }}
     needs:
       - determine_version
-      #- build
+      - build
     runs-on: ubuntu-latest
     env:
       ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
@@ -127,11 +127,9 @@ jobs:
           distribution: 'liberica'
 
       - name: Publish package to Maven Central Repository
-        #run: ./gradlew publishAndReleaseToMavenCentral -PVERSION_NAME=${{ env.NEW_VERSION }} --no-configuration-cache --s
-        run: echo ${{ needs.determine_version.outputs.newVersion }}
+        run: ./gradlew publishAndReleaseToMavenCentral -PVERSION_NAME=${{ needs.determine_version.outputs.newVersion }} --no-configuration-cache --s
 
   release_tagging:
-    if: false
     needs:
       - publish_to_maven_central
       - tag_management
