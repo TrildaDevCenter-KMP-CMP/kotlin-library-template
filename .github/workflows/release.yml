@@ -53,10 +53,6 @@ jobs:
       newVersion: ${{ steps.set_version.outputs.new_version }}
     runs-on: ubuntu-latest
     steps:
-      - name: current version
-        id: debug_version
-        run: |
-          echo "current version: ${{ needs.tag_management.outputs.currentVersion }}"
 
       - name: Get Next Version based on conventional commit messages
         if: ${{ inputs.release_type == 'automatic' }}
