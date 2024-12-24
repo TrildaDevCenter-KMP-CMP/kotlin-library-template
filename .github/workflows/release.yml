@@ -92,7 +92,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '22'
+          java-version: '23'
           distribution: 'liberica'
 
       - name: Setup Gradle
@@ -119,7 +119,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '22'
+          java-version: '23'
           distribution: 'liberica'
 
       - name: Publish package to Maven Central Repository
