@@ -70,7 +70,7 @@ jobs:
           distribution: 'liberica'
 
       - name: Publish package to Maven Central Repository
-        run: ./gradlew publishAndReleaseToMavenCentral -PVERSION_NAME=${{ steps.version_by_fragment.outputs.next-version }}-SNAPSHOT --no-configuration-cache --s
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository -PVERSION_NAME=${{ steps.version_by_fragment.outputs.next-version }}-SNAPSHOT --no-configuration-cache --s
 
   dependency-submission:
     runs-on: ubuntu-latest
