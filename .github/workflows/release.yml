@@ -148,6 +148,6 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git commit --allow-empty -m \"chore(release): bump version ${{ needs.tag_management.outputs.currentVersion }} -> ${{ needs.determine_version.outputs.newVersion }}\"
+          git commit --allow-empty -m 'chore(release): bump version ${{ needs.tag_management.outputs.currentVersion }} -> ${{ needs.determine_version.outputs.newVersion }}'
           git tag ${{ needs.determine_version.outputs.newVersion }}
           git push origin main --tags
