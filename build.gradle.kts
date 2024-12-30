@@ -13,6 +13,7 @@ allprojects {
 
     kotlin {
         jvm()
+        js()
     }
 
     mavenPublishing {
