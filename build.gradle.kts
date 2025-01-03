@@ -13,7 +13,10 @@ allprojects {
 
     kotlin {
         jvm()
-        js()
+        js {
+            browser()
+            nodejs()
+        }
     }
 
     mavenPublishing {
@@ -28,9 +31,5 @@ allprojects {
         theme = MOCHA_PARALLEL
         showFullStackTraces = false
         slowThreshold = 1_000
-    }
-
-    tasks.withType<Test> {
-        useJUnitPlatform()
     }
 }
