@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.mavenPublishPlugin)
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.testLogger)
+
+    alias(libs.plugins.versionsPlugin)
+    alias(libs.plugins.versionCatalogUpdate)
 }
 
 // aggregate parent to an all-in-one library
