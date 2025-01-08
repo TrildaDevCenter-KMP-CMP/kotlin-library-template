@@ -15,7 +15,8 @@ dependencyResolutionManagement {
 }
 
 include(":core")
-include(":extensions:example")
+include(":example")
+project(":example").projectDir = file("extensions/example")
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
