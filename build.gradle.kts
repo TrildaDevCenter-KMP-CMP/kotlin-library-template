@@ -22,6 +22,7 @@ allprojects {
     apply(plugin = "com.adarshr.test-logger")
 
     kotlin {
+        explicitApi()
         jvm()
         js {
             browser()

@@ -1,5 +1,5 @@
 package codes.draeger.example.core
 
-class Example {
-    fun foo() = "bar".also { logger.info { "foo called $it" } }
+public class Example {
+    public fun foo(): String = "bar".also { logger.info { "foo called $it" } }
 }
