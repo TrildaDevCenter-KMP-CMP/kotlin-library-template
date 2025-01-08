@@ -6,6 +6,16 @@ plugins {
     alias(libs.plugins.testLogger)
 }
 
+// aggregate parent to an all-in-one library
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core)
+            api(projects.example)
+        }
+    }
+}
+
 allprojects {
     apply(plugin = "org.jetbrains.kotlin.multiplatform")
     apply(plugin = "com.vanniktech.maven.publish")
