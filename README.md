@@ -13,7 +13,7 @@ A **universal Kotlin library template** designed to kickstart your Kotlin librar
     - [x] Automatic versioning following [Semantic Versioning](https://semver.org/) principles.
     - [x] [Gradle version catalog](https://docs.gradle.org/current/userguide/version_catalogs.html) for easy and clean cross module dependency management.
     - [ ] [Gradle convention plugins](https://docs.gradle.org/current/samples/sample_convention_plugins.html) for consistent and reusable project configuration.
-    - [ ] Automatic dependency version checks and updates.
+    - [x] Automatic dependency version checks and updates via [Gradle Versions Plugin](https://github.com/littlerobots/version-catalog-update-plugin).
     - [ ] static code analysis with [detekt](https://detekt.dev/) and [ktlint](https://ktlint.github.io/).
     - [ ] [OSS Review Toolkit](https://oss-review-toolkit.org/ort/docs/intro) integration for automated license compliance checks.
     - [ ] Testing setup and coverage reporting out of the box.

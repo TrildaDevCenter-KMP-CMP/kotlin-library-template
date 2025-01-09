@@ -6,10 +6,11 @@ plugins {
     alias(libs.plugins.testLogger)
 
     alias(libs.plugins.versionsPlugin)
+    alias(libs.plugins.versionsFilterPlugin)
     alias(libs.plugins.versionCatalogUpdate)
 }
 
-// aggregate parent to an all-in-one library
+// aggregate dependents to an all-in-one library
 kotlin {
     sourceSets {
         commonMain.dependencies {
