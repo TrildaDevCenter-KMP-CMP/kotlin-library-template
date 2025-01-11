@@ -40,13 +40,6 @@ jobs:
         id: export_previous_tag
         run: echo "tag=${{ steps.previous_tag.outputs.tag }}" >> "$GITHUB_OUTPUT"
 
-      - name: Create initial tag if no tag found
-        if: ${{ steps.export_previous_tag.outputs.tag == '0.0.0' }}
-        run: |
-          OLDEST_COMMIT=$(git rev-list --max-parents=0 HEAD)
-          git tag 0.0.0 $OLDEST_COMMIT
-          git push origin 0.0.0
-
   determine_version:
     needs: tag_management
     outputs:
@@ -57,13 +50,13 @@ jobs:
       - name: Get Next Version based on conventional commit messages
         if: ${{ inputs.release_type == 'automatic' }}
         id: version_by_conventional_commit
-        uses: ietf-tools/semver-action@v1
+        uses: ietf-tools/semver-action@v1.9.0
         with:
           token: ${{ github.token }}
           branch: main
           noVersionBumpBehavior: warn
           skipInvalidTags: true
-          fromTag: ${{ needs.tag_management.outputs.currentVersion }}
+          fallbackTag: 0.0.0
 
       - name: Get Next Version based on given version fragment input
         if: ${{ inputs.release_type != 'automatic' }}
