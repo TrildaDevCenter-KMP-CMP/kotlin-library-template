@@ -11,7 +11,7 @@ slf4j = "2.0.16"
 testLogger = "4.0.0"
 versionCatalogUpdate = "0.8.5"
 versionsFilterPlugin = "0.1.16"
-versionsPlugin = "0.51.0"
+versionsPlugin = "0.52.0"
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
