@@ -40,6 +40,9 @@ This template comes with a powerful **automated publishing system**:
 1. **Use the Template:**
     - Fork the repository or use it directly as a GitHub Template.
     - Customize `settings.gradle.kts` and `build.gradle.kts` to suit your project.
+    - Give Github Actions required permissions to be able to open pull requests and commit tags to your repository.
+        - [x] Repository > Settings > Actions > General > Workflow permissions > Read and write permissions
+        - [x] Repository > Settings > Actions > General > Workflow permissions > Allow GitHub Actions to create and approve pull requests
 
 2. **Adjust Modules:**
     - Modify the `core` and `example` modules, or add new ones to expand functionality.
