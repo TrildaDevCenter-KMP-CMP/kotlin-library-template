@@ -17,25 +17,11 @@ An **opinionated Kotlin library template** designed to jumpstart your Kotlin lib
     - [x] Automatic dependency version checks and updates via [Gradle Versions Plugin](https://github.com/littlerobots/version-catalog-update-plugin).
     - [x] static code analysis and linting via [detekt](https://detekt.dev/) and [ktlint](https://ktlint.github.io/).
     - [ ] [OSS Review Toolkit](https://oss-review-toolkit.org/ort/docs/intro) integration for automated license compliance checks.
-    - [ ] Testing setup and coverage reporting out of the box.
+    - [x] Testing setup and coverage reporting out of the box.
 - **🟢 CI/CD Ready:** Preconfigured GitHub Actions workflows for seamless builds, releases and maintenance.
     - [x] Build, test and release snapshot version on every push to main.
     - [x] One-Click publish to Maven Central with automatic versioning.
     - [x] Scheduled automatic version catalog update updates via PR by using gradle task.
-
----
-
-## 📦 Benefits of the Automated Publisher
-
-This template comes with a powerful **automated publishing system**:
-
-1. **Secure Configuration:**
-    - Handles sensitive data such as access tokens securely through environment variables.
-    - Built-in support for CI/CD workflows ensures safe and consistent deployments.
-
-2. **Automatic Versioning:**
-    - Semantic Versioning is automatically managed based on tags or commit messages.
-    - No manual updates required in your `build.gradle.kts`.
 
 ---
 
@@ -45,24 +31,6 @@ Even though this template tries to reduce necessary manual steps as much as poss
 there are still some things you need to do, since you can not inherit some settings from github template repository.
 
 Please follow the [initial setup guide](INITIAL_SETUP.md) to get started. It won't take more than a few minutes.
-
----
-
-## 🤖 Preconfigured CI/CD Workflows
-
-This template includes ready-to-use GitHub Actions workflows for:
-- **Build & Test:** Ensures your library is reliable and bug-free.
-- **Release:** Automatically publishes new versions when a release tag is created.
-- **Linting:** Keeps your code clean and adherent to Kotlin standards.
-- **Maintenance:** Automatic updates of your dependencies via Pull Request.
----
-
-## ⚡️ Troubleshooting
-### How to get the signing key
-Please change the `<key id>` placeholder in the following command to your signing key id.
-```bash
-gpg --export-secret-keys --armor <key id> | grep -v '\-\-' | grep -v '^=.' | tr -d '\n'
-```
 
 ---
 
