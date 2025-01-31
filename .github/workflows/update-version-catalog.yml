@@ -34,9 +34,13 @@ jobs:
       - name: Push changes and create PR
         uses: peter-evans/create-pull-request@v7
         with:
-          branch: update-version-catalog
+          branch: auto-update/version-catalog-${{ github.run_id }}
           commit-message: "Update version catalog"
           title: "Update version catalog"
           body: |
             This PR updates the `libs.versions.toml` file by running the Gradle `versionCatalogUpdate` task.
           labels: 'maintenance'
+
+      - name: Trigger build workflow
+        run: |
+          echo "PR created, build workflow should be triggered automatically."
