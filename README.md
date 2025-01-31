@@ -4,11 +4,12 @@ A **universal Kotlin library template** designed to kickstart your Kotlin librar
 
 ## 🚀 Features
 
-- **Quick Start:** No complex setup required. Simply fork this template, adjust the settings, and start coding.
-- **Modular Structure:** Designed from the ground up to support splitting your library into multiple smaller libraries, enabling more granular access and flexibility for users of your project.
-- **Powered by Kotlin Multiplatform:** Offers full flexibility in choosing your target platforms
-- **Automated Publishing:** Fully configured Gradle setup for publishing to Maven Central or other package repositories.
-- **Best Practices Included:**
+- **⏩️ Quick Start:** No complex setup required. Simply fork this template, adjust the settings, and start coding.
+- **🧱 Modular Structure:** Designed from the ground up to support splitting your library into multiple smaller libraries, enabling more granular access and flexibility for users of your project.
+- **🌈 Powered by Kotlin Multiplatform:** Offers full flexibility in choosing your target platforms
+- **📦 Automated Publishing:** Fully configured Gradle setup for publishing to Maven Central or other package repositories.
+- **🗽 CI independent:** Every crucial task like build, test, release and version catalog update can be executed manually via Gradle tasks.
+- **🔋 Best Practices Included:**
     - [x] [Explicit API mode](https://kotlinlang.org/docs/whatsnew14.html#explicit-api-mode-for-library-authors) to enforce visibility to be specifically declared.
     - [x] Automatic versioning following [Semantic Versioning](https://semver.org/) principles.
     - [x] [Gradle version catalog](https://docs.gradle.org/current/userguide/version_catalogs.html) for easy and clean cross module dependency management.
@@ -17,7 +18,10 @@ A **universal Kotlin library template** designed to kickstart your Kotlin librar
     - [ ] static code analysis with [detekt](https://detekt.dev/) and [ktlint](https://ktlint.github.io/).
     - [ ] [OSS Review Toolkit](https://oss-review-toolkit.org/ort/docs/intro) integration for automated license compliance checks.
     - [ ] Testing setup and coverage reporting out of the box.
-- **CI/CD Ready:** Preconfigured GitHub Actions workflows for seamless builds and releases.
+- **🟢 CI/CD Ready:** Preconfigured GitHub Actions workflows for seamless builds, releases and maintenance.
+    - [x] Build, test and release snapshot version on every push to main.
+    - [x] On-Click publish to Maven Central with automatic versioning.
+    - [x] Scheduled automatic version catalog update updates via PR by using gradle task.
 
 ---
 
@@ -69,7 +73,7 @@ This template includes ready-to-use GitHub Actions workflows for:
 - **Build & Test:** Ensures your library is reliable and bug-free.
 - **Release:** Automatically publishes new versions when a release tag is created.
 - **Linting:** Keeps your code clean and adherent to Kotlin standards.
-
+- **Maintenance:** Automatic updates of your dependencies via Pull Request.
 ---
 
 ## ⚡️ Troubleshooting
