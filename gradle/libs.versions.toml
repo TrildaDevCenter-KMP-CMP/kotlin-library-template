@@ -12,6 +12,8 @@ testLogger = "4.0.0"
 versionCatalogUpdate = "0.8.5"
 versionsFilterPlugin = "0.1.16"
 versionsPlugin = "0.52.0"
+detekt = "1.23.7"
+kover = "0.9.1"
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -20,6 +22,8 @@ testLogger = { id = "com.adarshr.test-logger", version.ref = "testLogger" }
 versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionCatalogUpdate" }
 versionsFilterPlugin = { id = "se.ascp.gradle.gradle-versions-filter", version.ref = "versionsFilterPlugin" }
 versionsPlugin = { id = "com.github.ben-manes.versions", version.ref = "versionsPlugin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kover = { id = "org.jetbrains.kotlinx.kover.aggregation", version.ref = "kover" }
 
 [libraries]
 kotlinLogging = { module = "io.github.oshai:kotlin-logging", version.ref = "kotlinLogging" }
@@ -27,6 +31,7 @@ kotlinxCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", 
 kotlinxDatetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinxSerialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJSON" }
 slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 [bundles]
 kotlinxEcosystem = [

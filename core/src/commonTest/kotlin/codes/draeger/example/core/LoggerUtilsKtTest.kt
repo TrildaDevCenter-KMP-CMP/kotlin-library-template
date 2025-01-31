@@ -2,10 +2,10 @@ package codes.draeger.example.core
 
 import kotlin.test.Test
 
-internal class PrinterTest {
+internal class LoggerUtilsKtTest {
 
     @Test
-    fun testMessage() {
+    fun exampleTest() {
         logger.info { "dfd" }
     }
 }

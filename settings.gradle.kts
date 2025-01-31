@@ -1,3 +1,5 @@
+import kotlinx.kover.gradle.aggregation.settings.dsl.minBound
+
 rootProject.name = "kotlin-library-template"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
@@ -20,4 +22,8 @@ project(":example").projectDir = file("extensions/example")
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
+    id("org.jetbrains.kotlinx.kover.aggregation") version "0.9.1"
+}
+kover {
+    enableCoverage()
 }

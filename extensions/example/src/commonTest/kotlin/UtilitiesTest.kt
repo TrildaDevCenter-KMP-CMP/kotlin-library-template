@@ -2,11 +2,12 @@ package codes.draeger.utils
 
 import codes.draeger.example.extensions.example.foobar
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
-internal class PrinterTest {
+internal class UtilitiesKtTest {
 
     @Test
-    fun testMessage() {
-        foobar()
+    fun exampleTest() {
+        assertEquals(foobar(), "bar")
     }
 }
