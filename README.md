@@ -18,7 +18,7 @@ An **opinionated Kotlin library template** designed to jumpstart your Kotlin lib
     - [x] static code analysis and linting via [detekt](https://detekt.dev/) and [ktlint](https://ktlint.github.io/).
     - [ ] [OSS Review Toolkit](https://oss-review-toolkit.org/ort/docs/intro) integration for automated license compliance checks.
     - [x] Testing setup and coverage reporting out of the box.
-- **🟢 CI/CD Ready:** Preconfigured GitHub Actions workflows for seamless builds, releases and maintenance.
+- **🤖 CI/CD Ready:** Preconfigured GitHub Actions workflows for seamless builds, releases and maintenance.
     - [x] Build, test and release snapshot version on every push to main.
     - [x] One-Click publish to Maven Central with automatic versioning.
     - [x] Scheduled automatic version catalog update updates via PR by using gradle task.
