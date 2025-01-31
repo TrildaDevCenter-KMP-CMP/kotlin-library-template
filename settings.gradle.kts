@@ -1,5 +1,3 @@
-import kotlinx.kover.gradle.aggregation.settings.dsl.minBound
-
 rootProject.name = "kotlin-library-template"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

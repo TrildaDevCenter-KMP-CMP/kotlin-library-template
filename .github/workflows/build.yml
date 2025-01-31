@@ -18,7 +18,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '23'
+          java-version: '21'
           distribution: 'liberica'
 
       - name: Setup Gradle
@@ -58,7 +58,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '23'
+          java-version: '21'
           distribution: 'liberica'
 
       - name: Publish package to Maven Central Repository
@@ -74,7 +74,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '23'
+          java-version: '21'
           distribution: 'liberica'
 
       # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
