@@ -6,6 +6,12 @@ on:
       - '.github/workflows/release.yml'
       - '**/*.md'
       - 'LICENSE'
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - '.github/workflows/release.yml'
+      - '**/*.md'
+      - 'LICENSE'
 
 jobs:
   build:
@@ -26,6 +32,17 @@ jobs:
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build --s
+
+      - name: Add coverage report
+        id: kover
+        uses: mi-kas/kover-report@v1.9
+        with:
+          path: ${{ github.workspace }}/build/reports/kover/report.xml
+          title: Code Coverage
+          update-comment: true
+          min-coverage-overall: 80
+          min-coverage-changed-files: 80
+          coverage-counter-type: LINE
 
   snapshot_release:
     needs: build
