@@ -8,7 +8,7 @@ An **opinionated Kotlin library template** designed to jumpstart your Kotlin lib
 - **🧱 Modular Structure:** Designed from the ground up to support splitting your library into multiple smaller libraries, enabling more granular access and flexibility for users of your project.
 - **🌈 Powered by Kotlin Multiplatform:** Offers full flexibility in choosing your target platforms
 - **📦 Automated Publishing:** Fully configured Gradle setup for publishing to Maven Central or other package repositories.
-- **🗽 CI independent:** Every crucial task like build, test, release, lining, coverage measurement and version catalog update can be executed manually via Gradle tasks.
+- **🗽 CI independent:** Every crucial task like build, test, release, linting, coverage measurement and automatic dependency updates can be executed manually via Gradle tasks.
 - **🔋 Ready to go:** Everything you need to get started with your library included:
     - [x] [Explicit API mode](https://kotlinlang.org/docs/whatsnew14.html#explicit-api-mode-for-library-authors) to enforce visibility to be specifically declared.
     - [x] Automatic versioning following [Semantic Versioning](https://semver.org/) principles.
