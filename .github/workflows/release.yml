@@ -116,7 +116,7 @@ jobs:
           distribution: 'liberica'
 
       - name: Publish package to Maven Central Repository
-        run: ./gradlew publishAndReleaseToMavenCentral -PVERSION_NAME=${{ needs.determine_version.outputs.newVersion }} --no-configuration-cache --s
+        run: ./gradlew publishToMavenCentral -PVERSION_NAME=${{ needs.determine_version.outputs.newVersion }} --no-configuration-cache --s
 
   release_tagging:
     needs:
