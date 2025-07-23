@@ -27,8 +27,8 @@ An **opinionated Kotlin library template** designed to jumpstart your Kotlin lib
 
 ## 🛠️ Installation and Usage
 
-Even though this template tries to reduce necessary manual steps as much as possible, 
-there are still some things you need to do, since you can not inherit some settings from github template repository.
+Even though this template tries to reduce the necessary manual steps as much as possible, 
+there are still some things you need to do, since you cannot inherit some settings from GitHub template repository.
 
 Please follow the [initial setup guide](INITIAL_SETUP.md) to get started. It won't take more than a few minutes.
 
