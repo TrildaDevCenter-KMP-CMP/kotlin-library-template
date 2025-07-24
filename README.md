@@ -13,7 +13,7 @@ An **opinionated Kotlin library template** designed to jumpstart your Kotlin lib
     - [x] [Explicit API mode](https://kotlinlang.org/docs/whatsnew14.html#explicit-api-mode-for-library-authors) to enforce visibility to be specifically declared.
     - [x] Automatic versioning following [Semantic Versioning](https://semver.org/) principles.
     - [x] [Gradle version catalog](https://docs.gradle.org/current/userguide/version_catalogs.html) for easy and clean cross module dependency management.
-    - [ ] [Gradle convention plugins](https://docs.gradle.org/current/samples/sample_convention_plugins.html) for consistent and reusable project configuration.
+    - [x] [Gradle convention plugins](https://docs.gradle.org/current/samples/sample_convention_plugins.html) for consistent and reusable project configuration.
     - [x] Automatic dependency version checks and updates via [Gradle Versions Plugin](https://github.com/littlerobots/version-catalog-update-plugin).
     - [x] static code analysis and linting via [detekt](https://detekt.dev/) and [ktlint](https://ktlint.github.io/).
     - [ ] [OSS Review Toolkit](https://oss-review-toolkit.org/ort/docs/intro) integration for automated license compliance checks.
