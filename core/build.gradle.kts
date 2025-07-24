@@ -1,7 +1,3 @@
-plugins {
-    id("kotlin-library-convention")
-}
-
 kotlin {
     sourceSets {
         commonMain.dependencies {
