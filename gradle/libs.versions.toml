@@ -1,6 +1,6 @@
 [versions]
 detekt = "1.23.8"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 kotlinLogging = "7.0.13"
 kotlinxCoroutines = "1.10.2"
 kotlinxDatetime = "0.7.1"
@@ -8,9 +8,9 @@ kotlinxSerializationJSON = "1.9.0"
 mavenPublishPlugin = "0.34.0"
 slf4j = "2.0.17"
 testLogger = "4.0.0"
-versionCatalogUpdate = "1.0.0"
+versionCatalogUpdate = "1.0.1"
 versionsFilterPlugin = "0.1.16"
-versionsPlugin = "0.52.0"
+versionsPlugin = "0.53.0"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
